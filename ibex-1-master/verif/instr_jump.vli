@@ -19,11 +19,12 @@ disable iff: !rst_ni;
         instr_addr_at_t_id = instr_addr_o@t_id,
         op1Data = pc_id@t_id,
         op2Data = signExtend(Bimm)@t_id,
-        regFile_at_t_id = id_stage_i/registers_i/rf_reg@t_id;
+        regFile_at_t_id = id_stage_i/registers_i/rf_reg@t_id,
+	stall = id_stage_i/controller_i/stall@t_id+1;
     assume:
         //core state
         at t_if:    conceptual_state;
-        at t_if:    instr_req_o;
+        at t_if:    instr_req_o ;
         at t_if:    !data_req_o;
 
         //inputs
@@ -50,8 +51,10 @@ disable iff: !rst_ni;
         at t_id:    jump_target_ex == unsigned(signed(PC_at_t_if) + signed(Bimm))[31:0];
 	at t_id:    instr_addr_o == unsigned(signed(PC_at_t_if) + signed(Bimm))[31:0];
         at t_id:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
+	//at t_wb:   	if_stage_i/have_instr && id_in_ready ;
 	at t_wb:    conceptual_state;
-        at t_wb:    instr_req_o;
+	at t_wb:    instr_req_o== (!stall ? 1:0);        
+	//at t_wb:    instr_req_o == (if_stage_i/prefetch_buffer_i/fifo_i/valid_q == 3'h0 ? 1:0);
         at t_wb:    !data_req_o;
         at t_wb:    instr_addr_o == (instr_addr_at_t_id == 32'hfffffffc ? 32'h0 : instr_addr_at_t_id + 4);
 	at t_wb:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;

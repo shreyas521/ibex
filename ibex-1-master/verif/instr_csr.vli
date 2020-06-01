@@ -164,7 +164,7 @@ disable iff: !rst_ni;
         at t_id:    instr_req_o;
         at t_id:    !data_req_o;
         at t_id:    instr_addr_o == (instr_addr_at_t_if == 32'hfffffffc ? 32'h0 : instr_addr_at_t_if + 4);
-        at t_id:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
+        at t_id+1:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
         at t_wb:  if (rd != 0) id_stage_i/registers_i/rf_reg[rd] == csr_read_data; endif;
 	at t_wb:  if (rd == 0) id_stage_i/registers_i/rf_reg[rd] == 0; endif;
         at t_wb:    foreach r in 0..31: if(r != rd) id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r];endif; end foreach;

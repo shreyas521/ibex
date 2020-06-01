@@ -32,3 +32,10 @@ constraint bounded_data_rvalid_wait :=
             next(data_rvalid_i,i);
         end exists;
 end constraint;
+
+constraint reg_bound :=
+	foreach r in 0..31: 
+		id_stage_i/registers_i/rf_reg[r] ==32'h0 || id_stage_i/registers_i/rf_reg[r] ==32'hFFFFFFFF || id_stage_i/registers_i/rf_reg[r] ==32'h0000FFFF 
+			|| id_stage_i/registers_i/rf_reg[r] ==32'h7FFFFFFF || id_stage_i/registers_i/rf_reg[r] ==32'h7FFF7FFF || id_stage_i/registers_i/rf_reg[r] ==32'h00007FFF;
+	end foreach;
+end constraint;
