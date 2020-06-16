@@ -19,7 +19,7 @@ disable iff: !rst_ni;
         at t_if:    conceptual_state;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
-
+	at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
         //inputs
         at t_if:    instr_rdata_i[6:0] == 7'h37; //set opcode
         at t_if:    instr_rdata_i[11:7] < 6; //r0 to r5
@@ -75,7 +75,7 @@ disable iff: !rst_ni;
         at t_if:    conceptual_state;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
-
+	at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
         //inputs
         at t_if:    instr_rdata_i[6:0] == 7'h17; //set opcode
         at t_if:    instr_rdata_i[11:7] < 6; //r0 to r5

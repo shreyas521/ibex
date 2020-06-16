@@ -1,6 +1,7 @@
 macro boolean conceptual_state := 
 	(((if_stage_i/prefetch_buffer_i/fifo_i/valid_q[0]&(if_stage_i/prefetch_buffer_i/fifo_i/valid_q[1] || !if_stage_i/prefetch_buffer_i/fifo_i/valid_q[2]))& !instr_req_o) || ((if_stage_i/prefetch_buffer_i/fifo_i/valid_q == 3'h0)& instr_req_o )) &&
 	//((if_stage_i/prefetch_buffer_i/fifo_i/valid_q != 3'h0 )^ instr_req_o )&&
+	//if_stage_i/prefetch_buffer_i/fifo_i/out_ready_i == 1 &&
 	id_stage_i/controller_i/special_req == (id_stage_i/controller_i/ctrl_fsm_cs == FIRST_FETCH? 1 : 0) &&
 	if_stage_i/if_id_pipe_reg_we == ((data_req_o)? 0 : 1); //IF to ID write enable
 end macro;
