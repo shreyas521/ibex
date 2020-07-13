@@ -127,7 +127,7 @@ disable iff: !rst_ni;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
 	at t_id:    !illegal_csr_insn_id;
-
+	//at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
         //inputs
         at t_if:    instr_rdata_i[6:0] == 7'h73; //set opcode
 	at t_if:	csr !=12'h300 & csr !=12'h304 & csr !=12'h301 & csr !=12'h344;//MSTATUS,MIE,MISA
@@ -164,7 +164,7 @@ disable iff: !rst_ni;
         at t_id:    instr_req_o;
         at t_id:    !data_req_o;
         at t_id:    instr_addr_o == (instr_addr_at_t_if == 32'hfffffffc ? 32'h0 : instr_addr_at_t_if + 4);
-        at t_id:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
+        at t_id+1:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
         at t_wb:  if (rd != 0) id_stage_i/registers_i/rf_reg[rd] == csr_read_data; endif;
 	at t_wb:  if (rd == 0) id_stage_i/registers_i/rf_reg[rd] == 0; endif;
         at t_wb:    foreach r in 0..31: if(r != rd) id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r];endif; end foreach;

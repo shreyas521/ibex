@@ -10,11 +10,11 @@ read_verilog -golden  -pragma_ignore {}  -version sv2005 {design/ibex_core.sv }
 elaborate -golden
 set_mode mv
 set_itl_flavor vli
-#read_itl {verif/macros.vli verif/prop.vli verif/constraints.vli verif/instr_alu.vli verif/instr_branch.vli verif/instr_ld.vli verif/instr_st.vli verif/instr_jump.vli verif/instr_const.vli verif/instr_csr.vli}
-read_itl {verif/macros.vli verif/new_prop.vli verif/constraints.vli verif/instr_csr.vli}
-#read_itl {verif/completeness.vli}
-#check_completeness -reset * "ibex"
-#check_completeness -successor {* *} "ibex"
-#check_completeness -determination {* *} "ibex"
+read_itl {verif/macros.vli verif/prop.vli verif/constraints.vli verif/instr_alu.vli verif/instr_branch.vli verif/instr_ld.vli verif/instr_st.vli verif/instr_jump.vli verif/instr_const.vli verif/instr_csr.vli verif/instr_multdiv.vli verif/instr_envcall.vli verif/instr_ret.vli}
+#read_itl {verif/macros.vli verif/new_prop.vli verif/constraints.vli verif/instr_multdiv.vli verif/instr_alu.vli verif/instr_jump.vli verif/instr_envcall.vli verif/instr_ret.vli}
+read_itl {verif/completeness.vli}
+check_completeness -reset * "ibex"
+check_completeness -successor {* *} "ibex"
+check_completeness -determination {* *} "ibex"
 check -pass -force [get_properties]
 check [get_properties]

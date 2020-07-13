@@ -50,7 +50,8 @@ disable iff: !rst_ni;
     assume:
         //core state
         at t_if:    conceptual_state;
-        at t_if:    instr_req_o;
+	//at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
+        at t_if:    instr_req_o ;
         at t_if:    !data_req_o;
 
         //inputs
@@ -85,7 +86,7 @@ disable iff: !rst_ni;
         //WB
         at t_id:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
         at t_id:    conceptual_state;
-        at t_id:    instr_req_o;
+	at t_id:    instr_req_o;
         at t_id:    !data_req_o;
         at t_id:    instr_addr_o == (instr_addr_at_t_if == 32'hfffffffc ? 32'h0 : instr_addr_at_t_if + 4);
         at t_id:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;

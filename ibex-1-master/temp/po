@@ -1,0 +1,25 @@
+macro boolean check_state :=
+	if_stage_i/prefetch_buffer_i/addr_valid &&
+	if_stage_i/prefetch_buffer_i/branch_abort_n &&
+	if_stage_i/prefetch_buffer_i/branch_abort_q &&
+	if_stage_i/prefetch_buffer_i/branch_abort_s &&
+	if_stage_i/prefetch_buffer_i/fetch_addr &&
+	if_stage_i/prefetch_buffer_i/fifo_clear &&
+	if_stage_i/prefetch_buffer_i/fifo_ready &&
+	if_stage_i/prefetch_buffer_i/fifo_valid &&
+	if_stage_i/prefetch_buffer_i/gnt_or_pmp_err &&
+	if_stage_i/prefetch_buffer_i/hold_addr_d &&
+	if_stage_i/prefetch_buffer_i/hold_addr_q &&
+	if_stage_i/prefetch_buffer_i/instr_addr &&
+	if_stage_i/prefetch_buffer_i/instr_addr_q &&
+	if_stage_i/prefetch_buffer_i/instr_addr_w_aligned &&
+	if_stage_i/prefetch_buffer_i/instr_or_pmp_err &&
+	if_stage_i/prefetch_buffer_i/pmp_err_q &&
+	if_stage_i/prefetch_buffer_i/rdata_outstanding_n &&
+	if_stage_i/prefetch_buffer_i/rdata_outstanding_q &&
+	if_stage_i/prefetch_buffer_i/rdata_outstanding_s &&
+	if_stage_i/prefetch_buffer_i/rvalid_or_pmp_err &&
+	if_stage_i/prefetch_buffer_i/valid_req &&
+	if_stage_i/prefetch_buffer_i/valid_req_d &&
+	if_stage_i/prefetch_buffer_i/valid_req_q ;
+end macro;
