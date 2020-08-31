@@ -1,6 +1,6 @@
 macro property instr_mret :=
 disable iff: !rst_ni; 
-	dependencies: instr_mem, bounded_data_gnt_wait, bounded_data_rvalid_wait;
+	dependencies:  empty_dbg, bounded_data_gnt_wait, bounded_data_rvalid_wait;
     for timepoints:
         t_if = t,
         t_id = t_if+1,
@@ -27,8 +27,7 @@ disable iff: !rst_ni;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
 	at t_if:    id_stage_i/controller_i/special_req == 1;
-	//at t_if:    instr_gnt_i ;
-	//at t_id:   !instr_fetch_err;
+	at t_id:   !instr_fetch_err;
 	at t_id:   res_pc != 0;
 
         //inputs
@@ -37,7 +36,9 @@ disable iff: !rst_ni;
         at t_if:    instr_rdata_i[14:12] == 0; //set write
 	at t_if:    instr_rdata_i[31:20] == 12'h302; //set func
         at t_if:    instr_rdata_i[19:15]  == 0; //no rs1
-     
+        at t_if:   !instr_req_o || (instr_req_o && instr_gnt_i && next(instr_rvalid_i));
+        at t_id:   !instr_req_o || (instr_req_o && instr_gnt_i && next(instr_rvalid_i));
+        at t_id+1:   !instr_req_o || (instr_req_o && instr_gnt_i && next(instr_rvalid_i));
     prove:
         //IF output
         at t_id:    instr_rdata_id[6:0] == opcode;
@@ -47,12 +48,15 @@ disable iff: !rst_ni;
         at t_id:    instr_rdata_id[31:20] == func12;
 
         //ID output
+        
+ 
 
         //WB
+
         at t_id:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
         at t_id:    instr_addr_o == (instr_addr_at_t_if == 32'hfffffffc ? 32'h0 : instr_addr_at_t_if + 4);
 	at t_id :    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
-	at t_id:    cs_registers_i/mstatus_q.mie == cs_registers_i/mstatus_q.mpie;
+	//at t_id:    cs_registers_i/mstatus_q.mie == cs_registers_i/mstatus_q.mpie;
 	at t_id:    cs_registers_i/priv_mode_o == priv;
 	at t_id:    cs_registers_i/mstatus_q.mpp == PRIV_LVL_M;
 	at t_id:    id_stage_i/mret_insn_dec == 1'b1;
@@ -73,12 +77,12 @@ end macro;
 
 macro property instr_dret :=
 disable iff: !rst_ni;
-    dependencies:  instr_mem, bounded_data_gnt_wait, bounded_data_rvalid_wait;
-   //dependencies: instr_mem, bounded_data_gnt_wait, bounded_data_rvalid_wait;
+    //dependencies:  instr_mem, bounded_data_gnt_wait, bounded_data_rvalid_wait;
+   dependencies: empty_dbg, instr_mem, bounded_data_gnt_wait, bounded_data_rvalid_wait;
     for timepoints:
         t_if = t,
         t_id = t_if+1,
-        t_wb = t_id+1;
+        t_id1 = t_id+1;
     freeze:
         rd = instr_rdata_i[11:7]@t_if,
         func3 = instr_rdata_i[14:12]@t_if,
@@ -97,15 +101,15 @@ disable iff: !rst_ni;
 
     assume:
         //core state
-        at t_if:    conceptual_state;
+	at t_if:     if_stage_i/prefetch_buffer_i/fifo_i/valid_q == 3'h0;
+	at t_if:	if_stage_i/if_id_pipe_reg_we == ((data_req_o)? 0 : 1);
+	at t_if:    id_stage_i/controller_i/debug_mode_q;
+	at t_if:    id_stage_i/controller_i/special_req == 1;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
-	at t_if:    id_stage_i/controller_i/special_req == 1;
 	at t_id: 	! id_stage_i/controller_i/illegal_dret;
-	//at t_id:   !instr_fetch_err;
-	at t_id:   res_pc != 0;
-	//at t_if:    instr_gnt_i ;
-	//at t_id+1:    ! instr_gnt_i ;
+	at t_id:   !instr_fetch_err;
+	//at t_id:   res_pc != 0;
 
         //inputs
         at t_if:    instr_rdata_i[6:0] == 7'h73; //set opcode
@@ -125,6 +129,7 @@ disable iff: !rst_ni;
         //ID output
 
         //WB
+	//at t_id:   id_stage_i/controller_i/ecall_insn_i | id_stage_i/controller_i/ebrk_insn_i | id_stage_i/controller_i/illegal_insn | id_stage_i/controller_i/instr_fetch_err_i;
         at t_id:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
 	at t_id:    id_stage_i/decoder_i/opcode == OPCODE_SYSTEM;
         //at t_id:    instr_addr_o == instr_addr_at_t_if;
@@ -132,12 +137,12 @@ disable iff: !rst_ni;
 	at t_id :    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
 	at t_id:    cs_registers_i/priv_mode_o == PRIV_LVL_M;
 	at t_id:    id_stage_i/dret_insn_dec == 1'b1;
-        at t_id+1:    id_stage_i/controller_i/ctrl_fsm_cs == FLUSH;
-        at t_id+1:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
-	at t_id+1:   pc_mux_id ==PC_DRET;
-	at t_id+2:    if_stage_i/prefetch_buffer_i/fifo_i/valid_q == 3'h0;
+        at t_id1:    id_stage_i/controller_i/ctrl_fsm_cs == FLUSH;
+        at t_id1:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;
+	at t_id1:   pc_mux_id ==PC_DRET;
+	at t_id+2:    if (!id_stage_i/controller_i/illegal_insn) conceptual_state; endif;
+	//at t_id+2:    if_stage_i/prefetch_buffer_i/fifo_i/valid_q == 3'h0;
 	at t_id+2:    instr_req_o;
-	at t_id+2:   !illegal_insn_id;
         at t_id+2:    !data_req_o;	
 	at t_id+2:    id_stage_i/controller_i/ctrl_fsm_cs == DECODE;
 	at t_id+2:    foreach r in 0..31: id_stage_i/registers_i/rf_reg[r] == regFile_at_t_id[r]; end foreach;

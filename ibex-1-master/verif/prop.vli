@@ -247,3 +247,20 @@ end property;
 property instr_REMU;
 	instr_mulh(3'h7);
 end property;
+
+property instr_ECALL;
+	instr_ecall;
+end property;
+
+property instr_EBREAK1;
+	instr_ebreak_1;
+end property;
+
+property instr_EBREAK_0;
+	instr_ebreak_0;
+end property;
+
+property instr_DRET;
+	instr_dret;
+end property;
+

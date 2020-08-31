@@ -50,7 +50,7 @@ disable iff: !rst_ni;
     assume:
         //core state
         at t_if:    conceptual_state;
-	at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
+	//at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
         at t_if:    instr_req_o ;
         at t_if:    !data_req_o;
 

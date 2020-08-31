@@ -127,7 +127,7 @@ disable iff: !rst_ni;
         at t_if:    instr_req_o;
         at t_if:    !data_req_o;
 	at t_id:    !illegal_csr_insn_id;
-	at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
+	//at t_if: 	!if_stage_i/prefetch_buffer_i/fifo_i/valid_q;
         //inputs
         at t_if:    instr_rdata_i[6:0] == 7'h73; //set opcode
 	at t_if:	csr !=12'h300 & csr !=12'h304 & csr !=12'h301 & csr !=12'h344;//MSTATUS,MIE,MISA
