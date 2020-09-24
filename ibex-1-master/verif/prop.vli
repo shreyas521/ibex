@@ -101,79 +101,79 @@ property instr_BGEU_not_taken;
 end property;
 
 property instr_ADDI;
-    instr_ALU(3'h0,0,0, 7'h13);
+    instr_ALU_imm(3'h0,0,0, 7'h13);
 end property;
 
 property instr_SLTI;
-    instr_ALU(3'h2,0,0, 7'h13);
+    instr_ALU_imm(3'h2,0,0, 7'h13);
 end property;
 
 property instr_SLTIU;
-    instr_ALU(3'h3,0,0, 7'h13);
+    instr_ALU_imm(3'h3,0,0, 7'h13);
 end property;
 
 property instr_XORI;
-    instr_ALU(3'h4,0,0, 7'h13);
+    instr_ALU_imm(3'h4,0,0, 7'h13);
 end property;
 
 property instr_ORI;
-    instr_ALU(3'h6,0,0, 7'h13);
+    instr_ALU_imm(3'h6,0,0, 7'h13);
 end property;
 
 property instr_ANDI;
-    instr_ALU(3'h7,0,0, 7'h13);
+    instr_ALU_imm(3'h7,0,0, 7'h13);
 end property;
 
 property instr_SLLI;
-    instr_ALU(3'h1, 7'h0, 1, 7'h13);
+    instr_ALU_imm(3'h1, 7'h0, 1, 7'h13);
 end property;
 
 property instr_SRLI;
-    instr_ALU(3'h5, 7'h0, 1, 7'h13);
+    instr_ALU_imm(3'h5, 7'h0, 1, 7'h13);
 end property;
 
 property instr_SRAI;
-    instr_ALU(3'h5, 7'h20, 1, 7'h13);
+    instr_ALU_imm(3'h5, 7'h20, 1, 7'h13);
 end property;
 
 property instr_ADD;
-    instr_ALU(3'h0, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h0, 7'h0, 7'h33);
 end property;
 
 property instr_SUB;
-    instr_ALU(3'h0, 7'h20, 2, 7'h33);
+    instr_ALU_reg(3'h0, 7'h20, 7'h33);
 end property;
 
 property instr_SLL;
-    instr_ALU(3'h1, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h1, 7'h0, 7'h33);
 end property;
 
 property instr_SLT;
-    instr_ALU(3'h2, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h2, 7'h0, 7'h33);
 end property;
 
 property instr_SLTU;
-    instr_ALU(3'h3, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h3, 7'h0, 7'h33);
 end property;
 
 property instr_XOR;
-    instr_ALU(3'h4, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h4, 7'h0, 7'h33);
 end property;
 
 property instr_SRL;
-    instr_ALU(3'h5, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h5, 7'h0, 7'h33);
 end property;
 
 property instr_SRA;
-    instr_ALU(3'h5, 7'h20, 2, 7'h33);
+    instr_ALU_reg(3'h5, 7'h20, 7'h33);
 end property;
 
 property instr_OR;
-    instr_ALU(3'h6, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h6, 7'h0, 7'h33);
 end property;
 
 property instr_AND;
-    instr_ALU(3'h7, 7'h0, 2, 7'h33);
+    instr_ALU_reg(3'h7, 7'h0, 7'h33);
 end property;
 
 property instr_JAL;
@@ -256,7 +256,7 @@ property instr_EBREAK1;
 	instr_ebreak_1;
 end property;
 
-property instr_EBREAK_0;
+property cinstr_EBREAK_0;
 	instr_ebreak_0;
 end property;
 

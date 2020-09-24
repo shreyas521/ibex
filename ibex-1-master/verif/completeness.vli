@@ -22,6 +22,8 @@ determination_assumptions:
   determined(fetch_enable_i);
 determined(illegal_csr_insn_id);
 determined (id_stage_i/controller_i/stall);
+determined(id_stage_i/controller_i/ctrl_fsm_cs);
+//added for now
 
 //csr-related
 determined(cs_registers_i/dcsr_q);
@@ -38,6 +40,8 @@ determined(cs_registers_i/mtval_q);
 determined(cs_registers_i/mtvec_q);
 determined(cs_registers_i/pmp_addr_rdata);
 determined(cs_registers_i/pmp_cfg_rdata);
+determined(csr_mtvec);
+determined(csr_depc);
 
 //debug-related
 determined(instr_fetch_err);
@@ -78,7 +82,6 @@ at right_hook+1: determined(id_stage_i/registers_i/rf_reg[2]); // visible regist
 at right_hook+1: determined(id_stage_i/registers_i/rf_reg[3]); // visible register
 at right_hook+1: determined(id_stage_i/registers_i/rf_reg[4]); // visible register
 at right_hook+1: determined(id_stage_i/registers_i/rf_reg[5]); // visible register
-//at right_hook: determined(if_stage_i/prefetch_buffer_i/fifo_i/out_ready_i);
 at right_hook: determined (if_stage_i/prefetch_buffer_i/fifo_i/valid_q[0]);
 at right_hook: determined(id_stage_i/controller_i/special_req);
 at right_hook: determined(if_stage_i/if_id_pipe_reg_we);
